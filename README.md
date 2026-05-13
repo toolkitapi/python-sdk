@@ -1,10 +1,8 @@
 # ToolkitAPI — Python SDK
 
 [![PyPI version](https://img.shields.io/pypi/v/toolkitapi.svg)](https://pypi.org/project/toolkitapi/)
-[![Python versions](https://img.shields.io/pypi/pyversions/toolkitapi.svg)](https://pypi.org/project/toolkitapi/)
+[![Python versions](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/toolkitapi/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-> Public beta: the package name is live-ready for install as pip install toolkitapi.
 
 Official Python SDK for [ToolkitAPI.io](https://toolkitapi.io) — a family of 16
 focused HTTP APIs covering DNS, email, images, PDFs, scraping, screenshots,
