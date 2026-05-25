@@ -24,8 +24,7 @@ from typing import Any, Dict, List, Optional, Type
 from . import analytics as _analytics
 from . import auth as _auth
 from . import barcode as _barcode
-from . import convert as _convert
-from . import devtools as _devtools
+from . import dev as _dev
 from . import dns as _dns
 from . import email as _email
 from . import geo as _geo
@@ -39,8 +38,7 @@ from . import webhook as _webhook
 from .analytics import Analytics
 from .auth import Auth
 from .barcode import Barcode
-from .convert import Convert
-from .devtools import Devtools
+from .dev import Dev
 from .dns import DNS
 from .email import Email
 from .geo import Geo
@@ -64,8 +62,7 @@ __all__ = [
     "Analytics",
     "Auth",
     "Barcode",
-    "Convert",
-    "Devtools",
+    "Dev",
     "DNS",
     "Email",
     "Geo",
@@ -109,8 +106,7 @@ class ToolkitAPI:
         self.analytics: _analytics.Analytics = _analytics.Analytics(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
         self.auth: _auth.Auth = _auth.Auth(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
         self.barcode: _barcode.Barcode = _barcode.Barcode(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
-        self.convert: _convert.Convert = _convert.Convert(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
-        self.devtools: _devtools.Devtools = _devtools.Devtools(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
+        self.dev: _dev.Dev = _dev.Dev(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
         self.dns: _dns.DNS = _dns.DNS(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
         self.email: _email.Email = _email.Email(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
         self.geo: _geo.Geo = _geo.Geo(api_key, base_url=base_url, timeout=timeout)  # type: ignore[valid-type]
@@ -126,8 +122,7 @@ class ToolkitAPI:
         self.analytics.close()
         self.auth.close()
         self.barcode.close()
-        self.convert.close()
-        self.devtools.close()
+        self.dev.close()
         self.dns.close()
         self.email.close()
         self.geo.close()

@@ -38,47 +38,66 @@ class PDF:
 
     def split(
         self,
-        body: Dict[str, Any],
+        url: str,
+        *,
+        pages: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Split a PDF into parts
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
+            pages: Page specification: 'all' for individual pages, or ranges like '1-3,5,8-10'
         """
-        return self._client.post("pdf/split", body=body)
+        return self._client.get("pdf/split", params={"url": url, "pages": pages})
 
     def rotate(
         self,
-        body: Dict[str, Any],
+        url: str,
+        angle: int,
+        *,
+        pages: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Rotate PDF pages
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
+            angle: Rotation angle: 90, 180, or 270 degrees clockwise
+            pages: Pages to rotate (e.g. '1-3,5'). Omit to rotate all pages.
         """
-        return self._client.post("pdf/rotate", body=body)
+        return self._client.get("pdf/rotate", params={"url": url, "angle": angle, "pages": pages})
 
     def compress(
         self,
-        body: Dict[str, Any],
+        url: str,
     ) -> Dict[str, Any]:
         """Compress a PDF to reduce file size
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
         """
-        return self._client.post("pdf/compress", body=body)
+        return self._client.get("pdf/compress", params={"url": url})
 
     def watermark(
         self,
-        body: Dict[str, Any],
+        url: str,
+        text: str,
+        *,
+        font_size: Optional[int] = None,
+        opacity: Optional[float] = None,
+        angle: Optional[int] = None,
+        pages: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Add a text watermark to PDF pages
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
+            text: Watermark text to overlay
+            font_size: Font size for the watermark text
+            opacity: Watermark opacity (0.01-1.0)
+            angle: Rotation angle for the watermark text in degrees
+            pages: Pages to watermark (e.g. '1-3,5'). Omit for all pages.
         """
-        return self._client.post("pdf/watermark", body=body)
+        return self._client.get("pdf/watermark", params={"url": url, "text": text, "font_size": font_size, "opacity": opacity, "angle": angle, "pages": pages})
 
     def protect(
         self,
@@ -115,14 +134,17 @@ class PDF:
 
     def text_extract(
         self,
-        body: Dict[str, Any],
+        url: str,
+        *,
+        pages: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Extract text from a PDF
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
+            pages: Pages to extract text from (e.g. '1-3,5'). Omit for all pages.
         """
-        return self._client.post("pdf/text", body=body)
+        return self._client.get("pdf/text", params={"url": url, "pages": pages})
 
     def metadata(
         self,
@@ -137,14 +159,17 @@ class PDF:
 
     def table_extract(
         self,
-        body: Dict[str, Any],
+        url: str,
+        *,
+        pages: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Extract tables from a PDF
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
+            pages: Pages to extract tables from (e.g. '1-3'). Omit for all pages.
         """
-        return self._client.post("pdf/table-extract", body=body)
+        return self._client.get("pdf/table-extract", params={"url": url, "pages": pages})
 
     def form_fields(
         self,
@@ -159,36 +184,78 @@ class PDF:
 
     def info(
         self,
-        body: Dict[str, Any],
+        url: str,
     ) -> Dict[str, Any]:
         """Get structural information about a PDF
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
         """
-        return self._client.post("pdf/info", body=body)
+        return self._client.get("pdf/info", params={"url": url})
 
     def ocr(
         self,
-        body: Dict[str, Any],
+        url: str,
+        *,
+        pages: Optional[str] = None,
+        language: Optional[str] = None,
+        dpi: Optional[int] = None,
     ) -> Dict[str, Any]:
         """Extract text from scanned/image PDFs using OCR
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
+            pages: Pages to OCR (e.g. '1-3,5'). Omit for all pages.
+            language: Tesseract language code (e.g. 'eng', 'fra', 'deu')
+            dpi: Resolution in DPI for rendering pages to images before OCR
         """
-        return self._client.post("pdf/ocr", body=body)
+        return self._client.get("pdf/ocr", params={"url": url, "pages": pages, "language": language, "dpi": dpi})
 
     def to_images(
         self,
-        body: Dict[str, Any],
+        url: str,
+        *,
+        pages: Optional[str] = None,
+        format: Optional[str] = None,
+        dpi: Optional[int] = None,
     ) -> Dict[str, Any]:
         """Render PDF pages as images
 
         Args:
-            body: Request body.
+            url: Public URL of a PDF document (http/https)
+            pages: Pages to render (e.g. '1-3,5'). Omit for all pages.
+            format: Output image format: 'png' or 'jpeg'
+            dpi: Resolution in dots per inch (72-600). Higher = larger, sharper images.
         """
-        return self._client.post("pdf/to-images", body=body)
+        return self._client.get("pdf/to-images", params={"url": url, "pages": pages, "format": format, "dpi": dpi})
+
+    def convert_document(
+        self,
+        url: str,
+        from_format: str,
+        to_format: str,
+        *,
+        pages: Optional[str] = None,
+        dpi: Optional[int] = None,
+        page_size: Optional[str] = None,
+        title: Optional[str] = None,
+        author: Optional[str] = None,
+        filename: Optional[str] = None,
+    ) -> Any:
+        """Convert document via URL (file download)
+
+        Args:
+            url: Public URL of the source document
+            from_format: Source format (pdf, docx, epub, html, doc, rtf, odt, txt)
+            to_format: Target format (pdf, docx, epub, png, jpeg)
+            pages: Page selection, e.g. '1-3,5' (pdf → images)
+            dpi: DPI for PDF → image rendering
+            page_size: Page size for HTML → PDF (A3/A4/A5/Letter/Legal)
+            title: Title metadata (EPUB output)
+            author: Author metadata (EPUB output)
+            filename: Override download filename
+        """
+        return self._client.get("pdf/convert/document", params={"url": url, "from_format": from_format, "to_format": to_format, "pages": pages, "dpi": dpi, "page_size": page_size, "title": title, "author": author, "filename": filename})
 
     def download_file(
         self,

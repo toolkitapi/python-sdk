@@ -10,8 +10,7 @@ from toolkitapi import (
     Analytics,
     Auth,
     Barcode,
-    Convert,
-    Devtools,
+    Dev,
     DNS,
     Email,
     Geo,
@@ -37,7 +36,7 @@ from conftest import MockTransport
 
 
 ALL_TOOLKITS = [
-    Analytics, Auth, Barcode, Convert, Devtools, DNS, Email,
+    Analytics, Auth, Barcode, Dev, DNS, Email,
     Geo, Image, Media, PDF, Scrape, Textanalysis, Webhook,
 ]
 
@@ -238,8 +237,7 @@ class TestToolkitAPIClient:
         assert isinstance(tk.analytics, Analytics)
         assert isinstance(tk.auth, Auth)
         assert isinstance(tk.barcode, Barcode)
-        assert isinstance(tk.convert, Convert)
-        assert isinstance(tk.devtools, Devtools)
+        assert isinstance(tk.dev, Dev)
         assert isinstance(tk.dns, DNS)
         assert isinstance(tk.email, Email)
         assert isinstance(tk.geo, Geo)
@@ -376,10 +374,10 @@ class TestPDFSmoke:
             transport=mock_transport,
         )
 
-        pdf.to_images(body={"url": "https://example.com/report.pdf", "pages": "1-2", "format": "jpeg", "dpi": 200})
+        pdf.to_images(url="https://example.com/report.pdf", pages="1-2", format="jpeg", dpi=200)
 
         req = mock_transport.requests[0]
-        assert req.method == "POST"
+        assert req.method == "GET"
         assert "/v1/pdf/to-images" in str(req.url)
         pdf.close()
 
@@ -391,10 +389,10 @@ class TestPDFSmoke:
             transport=mock_transport,
         )
 
-        pdf.text_extract(body={"url": "https://example.com/doc.pdf", "pages": "1-3"})
+        pdf.text_extract(url="https://example.com/doc.pdf", pages="1-3")
 
         req = mock_transport.requests[0]
-        assert req.method == "POST"
+        assert req.method == "GET"
         assert "/v1/pdf/text" in str(req.url)
         pdf.close()
 

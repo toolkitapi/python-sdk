@@ -79,7 +79,7 @@ class Textanalysis:
         Args:
             body: Request body.
         """
-        return self._client.post("text/pii-mask", body=body)
+        return self._client.post("text/mask", body=body)
 
     def profanity_filter(
         self,
@@ -112,7 +112,7 @@ class Textanalysis:
         Args:
             body: Request body.
         """
-        return self._client.post("text/language", body=body)
+        return self._client.post("text/detect-language", body=body)
 
     def transliterate_text(
         self,

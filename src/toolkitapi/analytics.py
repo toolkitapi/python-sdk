@@ -150,6 +150,21 @@ class Analytics:
         return self._client.post("datasets/bundle", body=body)
 
     # ------------------------------------------------------------------ #
+    #  Jobs
+    # ------------------------------------------------------------------ #
+
+    def get_job_status(
+        self,
+        job_id: str,
+    ) -> Dict[str, Any]:
+        """Poll async job status
+
+        Args:
+            job_id: 
+        """
+        return self._client.get("jobs/{job_id}", params={"job_id": job_id})
+
+    # ------------------------------------------------------------------ #
     #  Status
     # ------------------------------------------------------------------ #
 

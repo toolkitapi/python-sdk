@@ -1,4 +1,4 @@
-"""Generate a QR code with custom colours, module shapes, and optional logo embedding."""
+"""Return a raw QR code image — embeddable via ``<img src='...'>``."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from ._client import _APIClient
 
 
 class Barcode:
-    """Generate a styled QR code"""
+    """Generate a QR code (raw image)"""
 
     def __init__(
         self,
@@ -25,17 +25,6 @@ class Barcode:
     #  Qr
     # ------------------------------------------------------------------ #
 
-    def qr_generate(
-        self,
-        body: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        """Generate a styled QR code
-
-        Args:
-            body: Request body.
-        """
-        return self._client.post("qr/generate", body=body)
-
     def qr_generate_get(
         self,
         data: str,
@@ -46,6 +35,8 @@ class Barcode:
         fg_color: Optional[str] = None,
         bg_color: Optional[str] = None,
         module_shape: Optional[str] = None,
+        logo_url: Optional[str] = None,
+        logo_size: Optional[float] = None,
     ) -> Any:
         """Generate a QR code (raw image)
 
@@ -57,19 +48,21 @@ class Barcode:
             fg_color: Foreground hex colour
             bg_color: Background hex colour
             module_shape: 
+            logo_url: URL to a logo image to embed in the QR centre (PNG only)
+            logo_size: Logo size as a fraction of the QR code
         """
-        return self._client.get("qr/generate", params={"data": data, "size": size, "error_correction": error_correction, "format": format, "fg_color": fg_color, "bg_color": bg_color, "module_shape": module_shape})
+        return self._client.get("qr/generate", params={"data": data, "size": size, "error_correction": error_correction, "format": format, "fg_color": fg_color, "bg_color": bg_color, "module_shape": module_shape, "logo_url": logo_url, "logo_size": logo_size})
 
     def qr_decode(
         self,
-        body: Dict[str, Any],
+        url: str,
     ) -> Dict[str, Any]:
-        """Decode QR code(s) from an image
+        """Decode QR code(s) from an image URL
 
         Args:
-            body: Request body.
+            url: URL to an image containing QR code(s) or barcode(s)
         """
-        return self._client.post("qr/decode", body=body)
+        return self._client.get("qr/decode", params={"url": url})
 
     def qr_bulk(
         self,
@@ -85,17 +78,6 @@ class Barcode:
     # ------------------------------------------------------------------ #
     #  Barcode
     # ------------------------------------------------------------------ #
-
-    def generate(
-        self,
-        body: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        """Generate a barcode
-
-        Args:
-            body: Request body.
-        """
-        return self._client.post("barcode/generate", body=body)
 
     def generate_get(
         self,
@@ -125,14 +107,14 @@ class Barcode:
 
     def decode(
         self,
-        body: Dict[str, Any],
+        url: str,
     ) -> Dict[str, Any]:
-        """Decode barcode(s) from an image
+        """Decode barcode(s) from an image URL
 
         Args:
-            body: Request body.
+            url: URL to an image containing barcode(s)
         """
-        return self._client.post("barcode/decode", body=body)
+        return self._client.get("barcode/decode", params={"url": url})
 
     def bulk(
         self,

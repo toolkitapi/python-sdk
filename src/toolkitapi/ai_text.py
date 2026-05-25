@@ -21,7 +21,7 @@ _RewriteTone = Literal[
 ]
 
 
-class AiText:
+class AIText:
     """AI-powered text utilities backed by Gemini models.
 
     Covers structured extraction, classification, summarization, sentiment
@@ -29,9 +29,9 @@ class AiText:
 
     Example::
 
-        from toolkitapi import AiText
+        from toolkitapi import AIText
 
-        ai = AiText(api_key="tk_...")
+        ai = AIText(api_key="tk_...")
         result = ai.summarize(text="...", style="bullets")
     """
 
@@ -250,7 +250,7 @@ class AiText:
         """Close the underlying HTTP client."""
         self._client.close()
 
-    def __enter__(self) -> "AiText":
+    def __enter__(self) -> "AIText":
         return self
 
     def __exit__(self, *args: Any) -> None:

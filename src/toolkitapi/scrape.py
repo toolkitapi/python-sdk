@@ -151,6 +151,22 @@ class Scrape:
         """
         return self._client.get("scrape/robots", params={"url": url})
 
+    def map_domain(
+        self,
+        url: str,
+        *,
+        include_sitemap: Optional[bool] = None,
+        limit: Optional[int] = None,
+    ) -> Any:
+        """Discover URLs on a Domain
+
+        Args:
+            url: Any URL on the domain to map
+            include_sitemap: Also merge URLs from /sitemap.xml
+            limit: Max URLs to return
+        """
+        return self._client.get("scrape/map", params={"url": url, "include_sitemap": include_sitemap, "limit": limit})
+
     def start_crawl(
         self,
         body: Dict[str, Any],
