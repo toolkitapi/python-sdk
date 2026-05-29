@@ -122,7 +122,7 @@ class Webhook:
         Args:
             bin_id: 
         """
-        return self._client.head("catch/{bin_id}", params={"bin_id": bin_id})
+        return self._client.delete("catch/{bin_id}", params={"bin_id": bin_id})
 
     def catch_request_2(
         self,
@@ -133,7 +133,7 @@ class Webhook:
         Args:
             bin_id: 
         """
-        return self._client.put("catch/{bin_id}", params={"bin_id": bin_id})
+        return self._client.options("catch/{bin_id}", params={"bin_id": bin_id})
 
     def catch_request_3(
         self,
@@ -144,7 +144,7 @@ class Webhook:
         Args:
             bin_id: 
         """
-        return self._client.get("catch/{bin_id}", params={"bin_id": bin_id})
+        return self._client.post("catch/{bin_id}", params={"bin_id": bin_id})
 
     def catch_request_4(
         self,
@@ -155,7 +155,7 @@ class Webhook:
         Args:
             bin_id: 
         """
-        return self._client.patch("catch/{bin_id}", params={"bin_id": bin_id})
+        return self._client.head("catch/{bin_id}", params={"bin_id": bin_id})
 
     def catch_request_5(
         self,
@@ -166,7 +166,7 @@ class Webhook:
         Args:
             bin_id: 
         """
-        return self._client.options("catch/{bin_id}", params={"bin_id": bin_id})
+        return self._client.patch("catch/{bin_id}", params={"bin_id": bin_id})
 
     def catch_request_6(
         self,
@@ -177,7 +177,7 @@ class Webhook:
         Args:
             bin_id: 
         """
-        return self._client.delete("catch/{bin_id}", params={"bin_id": bin_id})
+        return self._client.put("catch/{bin_id}", params={"bin_id": bin_id})
 
     def catch_request_7(
         self,
@@ -188,7 +188,7 @@ class Webhook:
         Args:
             bin_id: 
         """
-        return self._client.post("catch/{bin_id}", params={"bin_id": bin_id})
+        return self._client.get("catch/{bin_id}", params={"bin_id": bin_id})
 
     # ------------------------------------------------------------------ #
     #  Mocks
@@ -241,7 +241,7 @@ class Webhook:
         Args:
             mock_id: 
         """
-        return self._client.head("mock/{mock_id}", params={"mock_id": mock_id})
+        return self._client.delete("mock/{mock_id}", params={"mock_id": mock_id})
 
     def hit_mock_2(
         self,
@@ -252,7 +252,7 @@ class Webhook:
         Args:
             mock_id: 
         """
-        return self._client.put("mock/{mock_id}", params={"mock_id": mock_id})
+        return self._client.options("mock/{mock_id}", params={"mock_id": mock_id})
 
     def hit_mock_3(
         self,
@@ -263,7 +263,7 @@ class Webhook:
         Args:
             mock_id: 
         """
-        return self._client.get("mock/{mock_id}", params={"mock_id": mock_id})
+        return self._client.post("mock/{mock_id}", params={"mock_id": mock_id})
 
     def hit_mock_4(
         self,
@@ -274,7 +274,7 @@ class Webhook:
         Args:
             mock_id: 
         """
-        return self._client.patch("mock/{mock_id}", params={"mock_id": mock_id})
+        return self._client.head("mock/{mock_id}", params={"mock_id": mock_id})
 
     def hit_mock_5(
         self,
@@ -285,7 +285,7 @@ class Webhook:
         Args:
             mock_id: 
         """
-        return self._client.options("mock/{mock_id}", params={"mock_id": mock_id})
+        return self._client.patch("mock/{mock_id}", params={"mock_id": mock_id})
 
     def hit_mock_6(
         self,
@@ -296,7 +296,7 @@ class Webhook:
         Args:
             mock_id: 
         """
-        return self._client.delete("mock/{mock_id}", params={"mock_id": mock_id})
+        return self._client.put("mock/{mock_id}", params={"mock_id": mock_id})
 
     def hit_mock_7(
         self,
@@ -307,7 +307,7 @@ class Webhook:
         Args:
             mock_id: 
         """
-        return self._client.post("mock/{mock_id}", params={"mock_id": mock_id})
+        return self._client.get("mock/{mock_id}", params={"mock_id": mock_id})
 
     # ------------------------------------------------------------------ #
     #  

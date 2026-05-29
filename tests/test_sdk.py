@@ -135,6 +135,21 @@ class TestAPIClient:
         assert "type" not in str(req.url)
         client.close()
 
+    def test_trailing_underscore_query_keys_normalized(self, mock_transport: MockTransport):
+        client = _APIClient("dns", api_key="tk_test")
+        client._client = httpx.Client(
+            base_url=client._base_url,
+            headers={"X-API-Key": "tk_test", "Accept": "application/json"},
+            transport=mock_transport,
+        )
+
+        client.get("lookup", params={"domain": "example.com", "type_": "MX"})
+
+        req = mock_transport.requests[0]
+        assert "type=MX" in str(req.url)
+        assert "type_=" not in str(req.url)
+        client.close()
+
     def test_context_manager(self, mock_transport: MockTransport):
         with _APIClient("dns", api_key="tk_test") as client:
             client._client = httpx.Client(
@@ -248,6 +263,29 @@ class TestToolkitAPIClient:
         assert isinstance(tk.textanalysis, Textanalysis)
         assert isinstance(tk.webhook, Webhook)
         tk.close()
+
+
+class TestDNSEndpoints:
+    """Request-shape regression tests for DNS helpers."""
+
+    def test_compare_resolvers_maps_type_param(self, mock_transport: MockTransport):
+        dns = DNS(api_key="tk_test")
+        dns._client._client = httpx.Client(
+            base_url=dns._client._base_url,
+            headers={"X-API-Key": "tk_test", "Accept": "application/json"},
+            transport=mock_transport,
+        )
+
+        result = dns.compare_resolvers("example.com", type_="MX")
+
+        assert result == {"ok": True}
+        req = mock_transport.requests[0]
+        assert req.method == "GET"
+        assert "/v1/compare-resolvers" in str(req.url)
+        assert "domain=example.com" in str(req.url)
+        assert "type=MX" in str(req.url)
+        assert "type_=" not in str(req.url)
+        dns.close()
 
     def test_close_and_context(self):
         with ToolkitAPI(api_key="tk_test") as tk:

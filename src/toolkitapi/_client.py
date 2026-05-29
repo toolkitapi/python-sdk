@@ -99,9 +99,11 @@ class _APIClient:
             path: Endpoint path **without** the ``/v1/`` prefix
                   (e.g. ``"lookup"``, ``"seo/audit"``).
             params: Query-string parameters.  ``None`` values are
-                    silently dropped.
+                  silently dropped. Keys ending with ``_`` are mapped
+                  to the same key without the trailing underscore to
+                  support Python reserved-word parameter names.
         """
-        clean = _strip_none(params) if params else None
+        clean = _clean_params(params) if params else None
         response = self._client.get(f"/v1/{path}", params=clean)
         return self._handle(response)
 
@@ -119,9 +121,10 @@ class _APIClient:
         Parameters:
             path: Endpoint path **without** the ``/v1/`` prefix.
             params: Query-string parameters.  ``None`` values are
-                    silently dropped.
+                    silently dropped. Keys ending with ``_`` are mapped
+                    to the same key without the trailing underscore.
         """
-        clean = _strip_none(params) if params else None
+        clean = _clean_params(params) if params else None
         response = self._client.get(f"/v1/{path}", params=clean)
         if response.is_success:
             return response.content
@@ -142,13 +145,15 @@ class _APIClient:
             body: JSON-serialisable request body.  For ``dict`` bodies,
                   ``None`` values are silently dropped.  Lists, strings,
                   and other JSON-serialisable values are sent as-is.
-            params: Optional query-string parameters.
+            params: Optional query-string parameters. Keys ending with
+                    ``_`` are mapped to the same key without the trailing
+                    underscore.
         """
         if isinstance(body, dict):
             clean_body: Any = _strip_none(body)
         else:
             clean_body = body
-        clean_params = _strip_none(params) if params else None
+        clean_params = _clean_params(params) if params else None
         response = self._client.post(
             f"/v1/{path}",
             json=clean_body,
@@ -166,9 +171,10 @@ class _APIClient:
         Parameters:
             path: Endpoint path **without** the ``/v1/`` prefix.
             params: Query-string parameters.  ``None`` values are
-                    silently dropped.
+                    silently dropped. Keys ending with ``_`` are mapped
+                    to the same key without the trailing underscore.
         """
-        clean = _strip_none(params) if params else None
+        clean = _clean_params(params) if params else None
         response = self._client.delete(f"/v1/{path}", params=clean)
         return self._handle(response)
 
@@ -225,3 +231,18 @@ class _APIClient:
 def _strip_none(mapping: Dict[str, Any]) -> Dict[str, Any]:
     """Return a shallow copy of *mapping* with ``None`` values removed."""
     return {k: v for k, v in mapping.items() if v is not None}
+
+
+def _clean_params(mapping: Dict[str, Any]) -> Dict[str, Any]:
+    """Drop ``None`` values and normalize trailing-underscore keys.
+
+    Python wrappers commonly use names like ``type_`` for reserved words.
+    At the HTTP layer, these should be emitted as ``type``.
+    """
+    clean: Dict[str, Any] = {}
+    for key, value in mapping.items():
+        if value is None:
+            continue
+        out_key = key[:-1] if key.endswith("_") else key
+        clean[out_key] = value
+    return clean
