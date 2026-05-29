@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "toolkitapi"
-version = "2.0.0b2"
+version = "2.0.0b3"
 description = "Official Python SDK for ToolkitAPI.io — 16 toolkits: DNS, DevTools, Email, Scrape, Image, PDF, Screenshot, AI-Text, Barcode, Finance, Media, TextAnalysis, Webhook, and more."
 readme = "README.md"
 license = "MIT"
