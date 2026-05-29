@@ -34,7 +34,26 @@ jobs:
       - name: Show built files
         run: ls -la dist/
 
+      - name: Stage only current tag artifacts
+        run: |
+          VERSION="${GITHUB_REF_NAME#python-sdk-v}"
+          echo "Publishing version: ${VERSION}"
+
+          mkdir -p publish_dist
+          shopt -s nullglob
+          files=(dist/toolkitapi-"${VERSION}"*)
+
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "ERROR: No artifacts found for toolkitapi-${VERSION} in dist/"
+            exit 1
+          fi
+
+          cp -v "${files[@]}" publish_dist/
+          echo "Staged files for upload:"
+          ls -la publish_dist/
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          packages-dir: publish_dist/
           skip-existing: true
