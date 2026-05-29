@@ -22,20 +22,19 @@ jobs:
 
       - name: Clean previous build artifacts
         run: |
-          rm -rf sdk/python/dist sdk/python/build
-          find sdk/python -maxdepth 2 -type d -name "*.egg-info" -exec rm -rf {} +
+          rm -rf dist build
+          find . -maxdepth 2 -type d -name "*.egg-info" -exec rm -rf {} +
 
       - name: Install build tools
         run: pip install --upgrade build
 
       - name: Build distribution
-        working-directory: sdk/python
         run: python -m build
 
       - name: Show built files
-        run: ls -la sdk/python/dist
+        run: ls -la dist/
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: sdk/python/dist/
+          skip-existing: true
