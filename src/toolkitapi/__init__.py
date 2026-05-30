@@ -20,6 +20,7 @@ Or use the unified client for multi-toolkit workflows::
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Type
+from importlib.metadata import PackageNotFoundError, version as _pkg_version
 
 from . import analytics as _analytics
 from . import auth as _auth
@@ -76,7 +77,10 @@ __all__ = [
 ]
 
 
-__version__ = "2.0.0b1"
+try:
+    __version__ = _pkg_version("toolkitapi")
+except PackageNotFoundError:
+    __version__ = "0.0.0"
 
 
 class ToolkitAPI:

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from importlib.metadata import version as pkg_version
+
 import httpx
 import pytest
 
@@ -52,6 +54,9 @@ class TestPackageMeta:
     def test_version_string(self):
         assert isinstance(toolkitapi.__version__, str)
         assert len(toolkitapi.__version__.split(".")) == 3, "version should be semver (major.minor.patch)"
+
+    def test_version_matches_distribution_metadata(self):
+        assert toolkitapi.__version__ == pkg_version("toolkitapi")
 
     def test_all_toolkits_importable(self):
         for cls in ALL_TOOLKITS:
